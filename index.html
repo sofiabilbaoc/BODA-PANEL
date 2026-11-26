@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel RSVP · Karla &amp; Juan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Pinyon+Script&family=Poppins:wght@400;500&display=swap">
+<style>
+:root{
+  --olivo:#525029; --olivo-gris:#6b6a4e; --olivo-claro:#969449; --olivo-profundo:#42401f;
+  --lino:#f8f8fa; --marfil:#ffffe9; --tinta:#030305; --arena:#e1dad0; --linea:rgba(82,80,41,.22);
+  --display:"Instrument Serif",Georgia,serif; --script:"Pinyon Script",cursive; --sans:"Poppins","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--arena);color:var(--tinta);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--olivo)}
+:focus-visible{outline:2px solid var(--olivo);outline-offset:2px}
+
+/* encabezado */
+.top{background:var(--olivo);color:var(--marfil);text-align:center;padding:28px 16px 22px}
+.top h1{margin:0;font-family:var(--script);font-weight:400;font-size:clamp(2.4rem,9vw,3.2rem);line-height:1.1}
+.top p{margin:4px 0 0;font-family:var(--display);font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase}
+.top .salir{position:absolute;top:14px;right:16px;background:none;border:1px solid rgba(255,255,233,.5);color:var(--marfil);padding:6px 12px;font-size:.72rem;letter-spacing:.08em;cursor:pointer}
+.top{position:relative}
+
+main{max-width:1000px;margin:0 auto;padding:24px 16px 60px;display:flex;flex-direction:column;gap:22px}
+.tarjeta{background:var(--lino);padding:22px clamp(16px,4vw,28px);box-shadow:0 18px 30px -24px rgba(40,38,18,.5)}
+.tarjeta h2{margin:0 0 14px;font-family:var(--display);font-weight:400;font-size:1.45rem;text-transform:uppercase;letter-spacing:.02em;color:var(--olivo)}
+.tarjeta h2 small{display:block;font-family:var(--display);font-style:italic;text-transform:none;font-size:1rem;color:var(--olivo-gris);letter-spacing:0;margin-top:2px}
+
+/* login */
+.login{max-width:380px;margin:8vh auto 0;text-align:center}
+.login form{display:flex;flex-direction:column;gap:14px;text-align:left;margin-top:10px}
+label.campo{display:flex;flex-direction:column;gap:6px;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--olivo-gris)}
+label.campo input{font-family:var(--display);font-size:1.15rem;letter-spacing:0;text-transform:none;color:var(--tinta);background:#fff;border:1px solid var(--linea);padding:10px 12px;border-radius:0}
+.btn{border:0;background:var(--olivo);color:var(--marfil);padding:12px 18px;font-family:var(--display);font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.btn.sec{background:none;color:var(--olivo);border:1px solid var(--olivo)}
+.btn:disabled{opacity:.6;cursor:wait}
+.msg{margin:0;min-height:1.2em;font-size:.8rem;color:#8a3b2a}
+.aviso{background:#fff8d9;border:1px solid #d8cc8c;padding:14px 16px;font-size:.85rem;line-height:1.5}
+
+/* números */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--lino);padding:16px 14px;text-align:center;box-shadow:0 18px 30px -24px rgba(40,38,18,.5)}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,7vw,3rem);line-height:1;color:var(--olivo)}
+.stat span{display:block;margin-top:6px;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--olivo-gris)}
+.stat.principal{background:var(--olivo)}
+.stat.principal b,.stat.principal span{color:var(--marfil)}
+
+/* generador de enlaces */
+.gen{display:grid;grid-template-columns:1fr 120px;gap:12px}
+.gen > *{min-width:0}
+.gen .res{grid-column:1/-1;display:flex;flex-direction:column;gap:10px}
+.enlace{font-size:.8rem;word-break:break-all;background:#fff;border:1px dashed var(--olivo-claro);padding:10px 12px;color:var(--olivo-profundo)}
+.acciones{display:flex;gap:10px;flex-wrap:wrap}
+.acciones .btn{padding:10px 14px;font-size:.95rem}
+
+/* lista */
+.barra{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filtros{display:flex;border:1px solid var(--olivo)}
+.filtros button{background:none;border:0;padding:8px 12px;font-size:.78rem;cursor:pointer;color:var(--olivo)}
+.filtros button[aria-pressed=true]{background:var(--olivo);color:var(--marfil)}
+.barra input{flex:1;min-width:160px;border:1px solid var(--linea);background:#fff;padding:9px 12px}
+.barra .btn{padding:8px 12px;font-size:.9rem}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-weight:500;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--olivo-gris);padding:8px 8px;border-bottom:1px solid var(--olivo)}
+td{padding:12px 8px;border-bottom:1px solid var(--linea);vertical-align:top}
+td.nombre{font-family:var(--display);font-size:1.12rem}
+td.num{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.msj{font-family:var(--display);font-style:italic;font-size:1rem;color:var(--olivo-profundo);max-width:300px}
+td.fecha{font-size:.75rem;color:var(--olivo-gris);white-space:nowrap}
+.pill{display:inline-block;padding:2px 10px;font-size:.72rem;border-radius:20px;white-space:nowrap}
+.pill.si{background:var(--olivo);color:var(--marfil)}
+.pill.no{background:#e6e1d6;color:var(--olivo-gris)}
+.rep{display:inline-block;margin-left:6px;font-family:var(--sans);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:#8a3b2a;border:1px solid #c79a8a;padding:0 5px;vertical-align:middle}
+.mas{color:#8a3b2a;font-size:.7rem;display:block}
+.borrar{background:none;border:0;color:var(--olivo-gris);cursor:pointer;font-size:.75rem;text-decoration:underline;padding:0}
+.borrar.seguro{color:#8a3b2a;font-weight:500}
+.vacio{text-align:center;padding:30px 10px;font-family:var(--display);font-style:italic;font-size:1.1rem;color:var(--olivo-gris)}
+.pie{text-align:center;font-size:.72rem;color:var(--olivo-gris)}
+
+@media (max-width:700px){
+  .stats{grid-template-columns:1fr 1fr}
+  .gen{grid-template-columns:1fr 90px}
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  tr{position:relative;padding:12px 0;border-bottom:1px solid var(--linea)}
+  td{border:0;padding:2px 0}
+  td.num{text-align:left}
+  td.num::before{content:attr(data-l) " ";color:var(--olivo-gris);font-size:.72rem}
+  td.fecha{margin-top:4px}
+  td.accion{margin-top:6px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Karla &amp; Juan</h1>
+  <p>Confirmaciones</p>
+  <button class="salir" id="salir" hidden>Salir</button>
+</header>
+
+<main>
+  <div class="aviso" id="sinConfig" hidden>
+    Falta conectar la base de datos: abre este archivo y pega la <b>Project URL</b> y la clave pública de Supabase en <code>CONFIG</code>, al inicio del script.
+  </div>
+
+  <!-- inicio de sesión -->
+  <section class="tarjeta login" id="vLogin" hidden>
+    <h2>Entrar<small>Solo para Karla, Juan y quien organiza</small></h2>
+    <form id="fLogin">
+      <label class="campo">Correo<input type="email" name="email" autocomplete="username" required></label>
+      <label class="campo">Contraseña<input type="password" name="pass" autocomplete="current-password" required></label>
+      <p class="msg" id="loginMsg" role="alert"></p>
+      <button class="btn" type="submit" id="loginBtn">Entrar</button>
+    </form>
+  </section>
+
+  <!-- panel -->
+  <div id="vPanel" hidden style="display:contents">
+    <section class="stats" aria-label="Resumen">
+      <div class="stat principal"><b id="sPersonas">–</b><span>Personas confirmadas</span></div>
+      <div class="stat"><b id="sSi">–</b><span>Invitaciones que dicen sí</span></div>
+      <div class="stat"><b id="sNo">–</b><span>No podrán ir</span></div>
+      <div class="stat"><b id="sTotal">–</b><span>Respuestas en total</span></div>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Crear enlace de invitación<small>Escribe a quién va y para cuántas personas es válida. Copia el enlace o mándalo directo por WhatsApp.</small></h2>
+      <form class="gen" id="fGen">
+        <label class="campo">Para (nombre o familia)<input type="text" id="gNombre" maxlength="120" placeholder="Familia López"></label>
+        <label class="campo">Pases<input type="number" id="gPases" min="1" max="20" value="2" inputmode="numeric"></label>
+        <div class="res">
+          <div class="enlace" id="gEnlace"></div>
+          <div class="acciones">
+            <button class="btn" type="button" id="gCopiar">Copiar enlace</button>
+            <a class="btn sec" id="gWhats" href="#" target="_blank" rel="noopener" style="text-decoration:none">Mandar por WhatsApp</a>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Lista de respuestas</h2>
+      <div class="barra">
+        <div class="filtros" role="group" aria-label="Filtrar">
+          <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+          <button type="button" data-f="si" aria-pressed="false">Sí</button>
+          <button type="button" data-f="no" aria-pressed="false">No</button>
+        </div>
+        <input type="search" id="buscar" placeholder="Buscar nombre…" aria-label="Buscar nombre">
+        <button class="btn sec" type="button" id="actualizar">Actualizar</button>
+        <button class="btn sec" type="button" id="descargar">Descargar Excel</button>
+      </div>
+      <table>
+        <thead><tr><th>Nombre</th><th>Respuesta</th><th style="text-align:center">Personas</th><th>Mensaje</th><th>Fecha</th><th></th></tr></thead>
+        <tbody id="lista"></tbody>
+      </table>
+      <p class="vacio" id="vacio" hidden>Todavía no hay respuestas.</p>
+      <p class="msg" id="listaMsg" role="alert"></p>
+    </section>
+    <p class="pie" id="pie"></p>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script>
+/* =========================================================
+   CONFIGURACIÓN — pega aquí los mismos datos que en la invitación
+   ========================================================= */
+const CONFIG = {
+  supabaseUrl: "https://wozjthnrvokfyuacanwj.supabase.co",   // Supabase > Project Settings > API > Project URL
+  supabaseKey: "sb_publishable_k5fZrI0K0a5B_qyvxlXePA__HC2i9g4",   // clave pública "anon public" o "publishable" (NUNCA la service_role / secret)
+  invitacionUrl: "https://sofiabilbaoc.github.io/BODA-KARLAYJUAN/"
+};
+
+const $ = id => document.getElementById(id);
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let sb = null, filas = [], filtro = 'todos';
+
+/* ---------- generador de enlaces (funciona aunque no haya sesión) ---------- */
+function enlace(){
+  const nombre = $('gNombre').value.trim(), p = Math.max(1, Math.min(20, parseInt($('gPases').value,10) || 1));
+  const u = new URL(CONFIG.invitacionUrl);
+  u.searchParams.set('pases', p);
+  if (nombre) u.searchParams.set('para', nombre);
+  const link = u.toString();
+  $('gEnlace').textContent = link;
+  const saludo = (nombre ? 'Hola ' + nombre + '! ' : 'Hola! ') +
+    'Con mucho cariño te compartimos nuestra invitación (válida para ' + p + (p === 1 ? ' persona' : ' personas') + '). ' +
+    'Por favor confirma tu asistencia desde el enlace: ' + link + '  Karla & Juan';
+  $('gWhats').href = 'https://wa.me/?text=' + encodeURIComponent(saludo);
+  return link;
+}
+['gNombre','gPases'].forEach(id => $(id).addEventListener('input', enlace));
+$('fGen').addEventListener('submit', e => e.preventDefault());
+$('gCopiar').addEventListener('click', async function(){
+  const t = enlace(), b = this;
+  try { await navigator.clipboard.writeText(t); b.textContent = 'Copiado'; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($('gEnlace')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selecciónalo y copia'; }
+  setTimeout(() => b.textContent = 'Copiar enlace', 1800);
+});
+enlace();
+
+/* ---------- lista ---------- */
+const fmtFecha = d => new Date(d).toLocaleString('es-GT', {day:'numeric', month:'short', hour:'numeric', minute:'2-digit'});
+const clave = n => n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+
+function pintar(){
+  const si = filas.filter(f => f.asiste), no = filas.filter(f => !f.asiste);
+  $('sPersonas').textContent = si.reduce((a,f) => a + (f.personas || 0), 0);
+  $('sSi').textContent = si.length; $('sNo').textContent = no.length; $('sTotal').textContent = filas.length;
+
+  const cuenta = {}; filas.forEach(f => { const k = clave(f.nombre); cuenta[k] = (cuenta[k] || 0) + 1; });
+  const q = clave($('buscar').value);
+  const ver = filas.filter(f => (filtro === 'todos' || (filtro === 'si') === f.asiste) && (!q || clave(f.nombre).includes(q)));
+  $('lista').innerHTML = ver.map(f => `
+    <tr>
+      <td class="nombre">${esc(f.nombre)}${cuenta[clave(f.nombre)] > 1 ? '<span class="rep" title="Este nombre confirmó más de una vez. Puedes borrar la respuesta vieja.">repetido</span>' : ''}</td>
+      <td>${f.asiste ? '<span class="pill si">Sí asiste</span>' : '<span class="pill no">No asiste</span>'}</td>
+      <td class="num" data-l="Personas:">${f.asiste ? f.personas + (f.pases ? ' de ' + f.pases : '') : '–'}${f.pases && f.personas > f.pases ? '<span class="mas">más de lo invitado</span>' : ''}</td>
+      <td class="msj">${f.mensaje ? '“' + esc(f.mensaje) + '”' : ''}</td>
+      <td class="fecha">${fmtFecha(f.creado)}</td>
+      <td class="accion"><button class="borrar" data-id="${f.id}">borrar</button></td>
+    </tr>`).join('');
+  $('vacio').hidden = ver.length > 0;
+  $('vacio').textContent = filas.length ? 'Nadie coincide con la búsqueda.' : 'Todavía no hay respuestas.';
+  $('pie').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-GT', {hour:'numeric', minute:'2-digit'});
+}
+
+async function cargar(){
+  $('listaMsg').textContent = '';
+  const { data, error } = await sb.from('confirmaciones').select('*').order('creado', { ascending: false });
+  if (error) { $('listaMsg').textContent = 'No se pudo cargar la lista: ' + error.message; return; }
+  filas = data || [];
+  if (!filas.length) {
+    // si no hay filas puede ser que este correo no tenga permiso: avisar con suavidad
+    $('listaMsg').textContent = '';
+  }
+  pintar();
+}
+
+$('lista').addEventListener('click', async e => {
+  const b = e.target.closest('.borrar'); if (!b) return;
+  if (!b.classList.contains('seguro')) { // primer clic: pedir confirmación
+    b.classList.add('seguro'); b.textContent = '¿seguro? clic otra vez';
+    setTimeout(() => { if (b.isConnected) { b.classList.remove('seguro'); b.textContent = 'borrar'; } }, 4000);
+    return;
+  }
+  b.disabled = true;
+  const { error } = await sb.from('confirmaciones').delete().eq('id', b.dataset.id);
+  if (error) { $('listaMsg').textContent = 'No se pudo borrar: ' + error.message; b.disabled = false; return; }
+  filas = filas.filter(f => String(f.id) !== b.dataset.id); pintar();
+});
+document.querySelectorAll('.filtros button').forEach(b => b.addEventListener('click', () => {
+  filtro = b.dataset.f; document.querySelectorAll('.filtros button').forEach(x => x.setAttribute('aria-pressed', x === b)); pintar();
+}));
+$('buscar').addEventListener('input', pintar);
+$('actualizar').addEventListener('click', cargar);
+$('descargar').addEventListener('click', () => {
+  const c = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const filasCsv = [['Nombre','Asiste','Personas','Pases','Mensaje','Fecha']].concat(
+    filas.map(f => [f.nombre, f.asiste ? 'Sí' : 'No', f.asiste ? f.personas : 0, f.pases ?? '', f.mensaje ?? '', new Date(f.creado).toLocaleString('es-GT')]));
+  const csv = '﻿' + filasCsv.map(r => r.map(c).join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'confirmaciones-karla-juan.csv'; document.body.appendChild(a); a.click(); a.remove();
+});
+
+/* ---------- sesión ---------- */
+function mostrar(sesion){
+  $('vLogin').hidden = !!sesion; $('vPanel').hidden = !sesion; $('salir').hidden = !sesion;
+  if (sesion) cargar();
+}
+$('fLogin').addEventListener('submit', async e => {
+  e.preventDefault(); const f = e.target; $('loginMsg').textContent = ''; $('loginBtn').disabled = true;
+  const { data, error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.pass.value });
+  $('loginBtn').disabled = false;
+  if (error) { $('loginMsg').textContent = 'Correo o contraseña incorrectos.'; return; }
+  f.pass.value = ''; mostrar(data.session);
+});
+$('salir').addEventListener('click', async () => { await sb.auth.signOut(); filas = []; mostrar(null); });
+
+(async function iniciar(){
+  if (!CONFIG.supabaseUrl || !CONFIG.supabaseKey || !window.supabase) {
+    $('sinConfig').hidden = false;
+    if (!window.supabase && CONFIG.supabaseUrl) $('sinConfig').textContent = 'No se pudo cargar Supabase. Revisa tu conexión y recarga la página.';
+    return;
+  }
+  sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+  const { data } = await sb.auth.getSession();
+  mostrar(data.session);
+  setInterval(() => { if (!$('vPanel').hidden && !document.hidden) cargar(); }, 60000);
+})();
+</script>
+</body>
+</html>
